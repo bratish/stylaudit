@@ -19,6 +19,7 @@ class FindClasses
     css_classes_in_templates = {}
     ff.template_files.each do |f|
       pcc = PickCssClasses.new(f)
+      pcc.classes
       css_classes_in_templates[f] = {
     "clean_class_references"              => pcc.pure_class_references,
     "class_references_inside_script_tags" => pcc.dynamic_class_references,
@@ -28,11 +29,15 @@ class FindClasses
 
     map_hash = {}
     css_class_hash.each do |file, classes_array| # For each css file
+#      p file
       c_h = {}
       classes_array.each do |css_class| # For each css class present in one file
         class_hash = {}
         css_classes_in_templates.each do |template_file, used_class_hash| # For each css classes in the template file
+#          p template_file
           used_class_hash.each do |ref_type, css_ref_name_array| # for each ref type
+#            p ref_type
+#            p css_ref_name_array
             if ref_type == "partial_class_references" && css_ref_name_array.size > 0
               css_class_array = Util.underscore(css_class).split(/[-_]/)
               css_class_array.each do |syllable| 
@@ -51,6 +56,7 @@ class FindClasses
       end
       map_hash[file] = c_h
     end
+    map_hash
   end
 end
 #FlatPrinter.new(map_hash, :file_name => "hola1.out").print
