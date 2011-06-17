@@ -1,4 +1,4 @@
-class PickCssClasses
+class PickCssSelectors
   attr_accessor :class_references, :class_references_with_script_tags, :pure_class_references, :partial_class_references, :dynamic_class_references
 
   def initialize(f)

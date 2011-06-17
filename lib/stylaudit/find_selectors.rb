@@ -1,6 +1,6 @@
 #rails_root = "/Users/bratish/p/solaro_copy"
 #rails_root = "/home/bratish/gnimmargorp/solaro-projects/solaro_old"
-class FindClasses
+class FindSelectors
   def map_hash
     css_class_hash = {}
     ff = FindFiles.new($rails_root)
@@ -18,7 +18,7 @@ class FindClasses
 
     css_classes_in_templates = {}
     ff.template_files.each do |f|
-      pcc = PickCssClasses.new(f)
+      pcc = PickCssSelectors.new(f)
       pcc.classes
       css_classes_in_templates[f] = {
     "clean_class_references"              => pcc.pure_class_references,
