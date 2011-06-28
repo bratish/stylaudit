@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'rubygems'
 require 'css_parser'
 require 'pp'
@@ -13,5 +15,5 @@ include CssParser
 
 $rails_root = ARGV[0]
 
-FlatPrinter.new(FindSelectors.new.map_hash, :file_name => "hola1.out").print
+FlatPrinter.new(FindSelectors.new.map_hash, :file_name => "classes.out").print
 

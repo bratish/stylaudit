@@ -1,5 +1,3 @@
-#rails_root = "/Users/bratish/p/solaro_copy"
-#rails_root = "/home/bratish/gnimmargorp/solaro-projects/solaro_old"
 class FindSelectors
   def map_hash
     css_class_hash = {}
@@ -19,25 +17,16 @@ class FindSelectors
     css_classes_in_templates = {}
     ff.template_files.each do |f|
       pcc = PickCssSelectors.new(f)
-      pcc.classes
-      css_classes_in_templates[f] = {
-    "clean_class_references"              => pcc.pure_class_references,
-    "class_references_inside_script_tags" => pcc.dynamic_class_references,
-    "partial_class_references"            => pcc.partial_class_references
-      }
+      css_classes_in_templates[f] = pcc.classes
     end
 
     map_hash = {}
     css_class_hash.each do |file, classes_array| # For each css file
-#      p file
       c_h = {}
       classes_array.each do |css_class| # For each css class present in one file
         class_hash = {}
         css_classes_in_templates.each do |template_file, used_class_hash| # For each css classes in the template file
-#          p template_file
           used_class_hash.each do |ref_type, css_ref_name_array| # for each ref type
-#            p ref_type
-#            p css_ref_name_array
             if ref_type == "partial_class_references" && css_ref_name_array.size > 0
               css_class_array = Util.underscore(css_class).split(/[-_]/)
               css_class_array.each do |syllable| 
@@ -59,6 +48,4 @@ class FindSelectors
     map_hash
   end
 end
-#FlatPrinter.new(map_hash, :file_name => "hola1.out").print
-#HTMLPrinter.new(map_hash).print
 
