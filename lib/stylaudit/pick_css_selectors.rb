@@ -2,12 +2,18 @@ class PickCssSelectors
 
   def initialize(f)
     @content = File.open(f, 'r').read
+    @file_type = File.basename(f).split(".").last.strip
   end
 
   def classes
     class_references = @content.grep(/[:]?class[ ]*=[ >]?/).map do |line|
       line.scan(/[:]?class[ ]*=[ >]?[ ]*[\\]?["|']([\w <%=\->:,?@'"\.\(\)#\{\}]*)[ ]*[\\]?["|']/)
     end.flatten.compact.reject { |s| s.strip.empty? }
+    
+    if @file_type == 'haml' #quick fix. need to have a rule to eliminate ruby class.method references
+      class_references += @content.scan(/\.([\w\-]+)/).flatten
+    end
+    
     class_references_with_script_tags = class_references.select do |str|
       str.scan(/(<%[\w =\-:,?@'"\.\(\)#\{\}]*%>)/).size > 0
     end
